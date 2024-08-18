@@ -53,6 +53,33 @@ namespace InventoryNamespace
             }
         }
 
-        
+        public static void UpdateProduct(String name)
+        {
+            if (products.Count == 0)
+                Console.WriteLine("No Products in the Inventory!");
+            else
+            {
+                var product = products.Find(product => product._name == name);
+                if (product == null)
+                    Console.WriteLine("Product Not Found :)");
+                else
+                {
+                    Console.WriteLine("Enter new price (leave blank to keep current): ");
+                    var newPrice = Console.ReadLine();
+                    if (double.TryParse(newPrice, out double price))
+                    {
+                        product._price = price;
+                    }
+                    Console.WriteLine("Enter new quantity (leave blank to keep current): ");
+                    var newQuantity = Console.ReadLine();
+                    if (int.TryParse(newQuantity, out int quantity))
+                    {
+                        product._quantity = quantity;
+                    }
+                    Console.WriteLine($"Product updated successfully: {0}", product);
+                }
+            }
+        }
+
     }
 }

@@ -81,5 +81,19 @@ namespace InventoryNamespace
             }
         }
 
+        public static void GetAll()
+        {
+            if (products.Count == 0)
+                Console.WriteLine("No products in the inventory :)");
+            else
+            {
+                Console.WriteLine("Current Inventory:");
+                foreach (var product in products)
+                {
+                    Console.WriteLine(product.ToString());
+                }
+            }
+        }
+
     }
 }

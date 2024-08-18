@@ -9,6 +9,18 @@ namespace InventoryNamespace
     {
         private static List<Product> products = new List<Product>();
 
+        public static void AddProduct(Product product)
+        {
+
+            foreach (var product1 in products)
+            {
+                if (product1.Equals(product))
+                    Console.WriteLine($"Product already exists.");
+
+            }
+            products.Add(product);
+            Console.WriteLine($"Product Added successfully: {0}", products);
+        }
 
         public static void FindByName(String name)
         {
@@ -25,7 +37,6 @@ namespace InventoryNamespace
                     Console.WriteLine(product.ToString());
             }
         }
-
 
 
     }

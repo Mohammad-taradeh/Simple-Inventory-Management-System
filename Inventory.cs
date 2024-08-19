@@ -23,7 +23,7 @@ namespace InventoryNamespace
         }
         public static void RemoveProduct(String name)
         {
-            if (products.Count == 0)
+            if (!products.Any())
                 Console.WriteLine($"No products in the invertory.");
             var product = products.Find(prod => prod._name == name);
             if (product == null)
@@ -39,7 +39,7 @@ namespace InventoryNamespace
 
         public static void FindByName(String name)
         {
-            if (products.Count == 0)
+            if (!products.Any())
             {
                 Console.WriteLine("No Products in the Inventory.");
             }
@@ -55,7 +55,7 @@ namespace InventoryNamespace
 
         public static void UpdateProduct(String name)
         {
-            if (products.Count == 0)
+            if (!products.Any())
                 Console.WriteLine("No Products in the Inventory!");
             else
             {
@@ -66,15 +66,15 @@ namespace InventoryNamespace
                 {
                     Console.WriteLine("Enter new price (leave blank to keep current): ");
                     var newPrice = Console.ReadLine();
-                    if (double.TryParse(newPrice, out double price))
+                    if (double.TryParse(newPrice, out var price))
                     {
-                        product._price = price;
+                        product.Price = price;
                     }
                     Console.WriteLine("Enter new quantity (leave blank to keep current): ");
                     var newQuantity = Console.ReadLine();
-                    if (int.TryParse(newQuantity, out int quantity))
+                    if (int.TryParse(newQuantity, out var quantity))
                     {
-                        product._quantity = quantity;
+                        product.Quantity = quantity;
                     }
                     Console.WriteLine($"Product updated successfully: {0}", product);
                 }
@@ -83,7 +83,7 @@ namespace InventoryNamespace
 
         public static void GetAll()
         {
-            if (products.Count == 0)
+            if (!products.Any())
                 Console.WriteLine("No products in the inventory :)");
             else
             {

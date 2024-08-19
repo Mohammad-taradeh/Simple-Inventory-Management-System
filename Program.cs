@@ -29,7 +29,7 @@ class Program
                     {
                         Console.WriteLine("Enter the product price:");
                         var price = Console.ReadLine();
-                        if (!double.TryParse(price, out double validPrice))
+                        if (!double.TryParse(price, out var validPrice))
                             Console.WriteLine("Invalid price type.");
                         else
                         {

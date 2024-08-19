@@ -4,32 +4,14 @@ namespace ProductNamespace
 {
     public class Product
     {
-        public string _name;
-        private double _price { get; set; }
-        private int _quantity { get; set; }
+        public string _name { get; set; }
+        public double _price { get; set; }
+        public int _quantity { get; set; }
         public Product(string name, double price, int quantity)
         {
             _name = name;
-            Price = price;
-            Quantity = quantity;
-        }
-        
-
-        public double Price
-            { 
-            get { return _price; }
-            set { 
-                if(_price <0) _price = 0;
-                else _price = value;
-            }
-        }
-        public int Quantity
-            { 
-            get { return _quantity; }
-            set { 
-                if(_quantity <0) _quantity = 0;
-                else _quantity = value;
-            }
+            _price = price;
+            _quantity = quantity;
         }
         public override bool Equals(object? obj)
         {

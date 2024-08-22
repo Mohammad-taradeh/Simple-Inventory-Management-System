@@ -1,31 +1,34 @@
-using ProductNamespace;
+using Inventory_System.Products;
 using System;
 using System.Xml.Linq;
 
 
-namespace InventoryNamespace
+namespace Inventory_System.Inventory
 {
     public static class Inventory
     {
-        private static List<Product> products = new List<Product>();
+        private static List<Product> products = new ();
 
         public static void AddProduct(Product product)
         {
 
-            foreach (var product1 in products)
+            Product? exist = products.FirstOrDefault(p => p.Name == product.Name);
+            if (exist != null)
             {
-                if (product1.Equals(product))
-                    Console.WriteLine($"Product already exists.");
-
+                Console.WriteLine("Ther is a product with the same name.");
             }
-            products.Add(product);
-            Console.WriteLine($"Product Added successfully: {0}", products);
+            else
+            {
+                products.Add(product);
+                Console.WriteLine($"Product Added successfully: {product}");
+            }
+            
         }
-        public static void RemoveProduct(String name)
+        public static void RemoveProduct(string name)
         {
             if (!products.Any())
                 Console.WriteLine($"No products in the invertory.");
-            var product = products.Find(prod => prod._name == name);
+            var product = products.Find(prod => prod.Name == name);
             if (product == null)
             {
                 Console.WriteLine($"There are no product with the name: {0}", name);
@@ -37,7 +40,7 @@ namespace InventoryNamespace
             }
         }
 
-        public static void FindByName(String name)
+        public static void FindByName(string name)
         {
             if (!products.Any())
             {
@@ -45,7 +48,7 @@ namespace InventoryNamespace
             }
             else
             {
-                var product = products.Find(prod => prod._name == name);
+                var product = products.Find(prod => prod.Name == name);
                 if (product == null)
                     Console.WriteLine("Product not found!");
                 else
@@ -53,13 +56,13 @@ namespace InventoryNamespace
             }
         }
 
-        public static void UpdateProduct(String name)
+        public static void UpdateProduct(string name)
         {
             if (!products.Any())
                 Console.WriteLine("No Products in the Inventory!");
             else
             {
-                var product = products.Find(product => product._name == name);
+                var product = products.Find(product => product.Name == name);
                 if (product == null)
                     Console.WriteLine("Product Not Found :)");
                 else
@@ -68,7 +71,7 @@ namespace InventoryNamespace
                     var newPrice = Console.ReadLine();
                     if (double.TryParse(newPrice, out var price))
                     {
-                        product.Price = price;
+                        product.Price.Value = price;
                     }
                     Console.WriteLine("Enter new quantity (leave blank to keep current): ");
                     var newQuantity = Console.ReadLine();
@@ -91,6 +94,7 @@ namespace InventoryNamespace
                 foreach (var product in products)
                 {
                     Console.WriteLine(product.ToString());
+                    Console.WriteLine("----------------------------------");
                 }
             }
         }

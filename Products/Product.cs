@@ -1,6 +1,6 @@
-﻿using System;
+﻿using System;  //TODO: Remove unused dependencies
 
-namespace Inventory_System.Products
+namespace Inventory_System.Products //TODO: NIT: InventorySystem.Products
 {
     public class Product
     {
@@ -12,14 +12,14 @@ namespace Inventory_System.Products
             Quantity = quantity;
 
         }
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } //TODO: Can we move all the properties above the constructor?
         public Price Price { get; set; }
         public override bool Equals(object? obj)
         {
-            if (obj == null || (obj is not Product))
+            if (obj == null || (obj is not Product)) //TODO: is operator handle null so we can avoid null check
                 return false;
-            else
-                return Name == ((Product)obj).Name
+            else //TODO: NIT: Remove else
+                return Name == ((Product)obj).Name //TODO: To avoid casting we can update is obj is not Product product and use product instead of casting + obj
                     && Price == ((Product)obj).Price
                     && Quantity == ((Product)obj).Quantity;
         }

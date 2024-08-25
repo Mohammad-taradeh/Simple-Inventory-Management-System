@@ -1,9 +1,9 @@
 using Inventory_System.Products;
 using System;
-using System.Xml.Linq;
+using System.Xml.Linq; //TODO: Remove unused dependencies
 
 
-namespace Inventory_System.Inventory
+namespace Inventory_System.Inventory //TODO: NIT InventorySystem.Inventory
 {
     public static class Inventory
     {
@@ -12,7 +12,8 @@ namespace Inventory_System.Inventory
         public static void AddProduct(Product product)
         {
 
-            Product? exist = products.FirstOrDefault(p => p.Name == product.Name);
+            Product? exist = products.FirstOrDefault(p => p.Name == product.Name); //TODO: var
+            //TODO: Since we need the product to check if name is used we can use .Any
             if (exist != null)
             {
                 Console.WriteLine("Ther is a product with the same name.");
@@ -40,6 +41,7 @@ namespace Inventory_System.Inventory
             }
         }
 
+        //TODO: Remove, update and find by name check if collection is empty and if product exists so should we move it to a private method and used when needed?
         public static void FindByName(string name)
         {
             if (!products.Any())
@@ -68,7 +70,7 @@ namespace Inventory_System.Inventory
                 else
                 {
                     Console.WriteLine("Enter new price (leave blank to keep current): ");
-                    var newPrice = Console.ReadLine();
+                    var newPrice = Console.ReadLine();//TODO Can we pass new values to the method? so this will update the product without get the value of the new ones?
                     if (double.TryParse(newPrice, out var price))
                     {
                         product.Price.Value = price;

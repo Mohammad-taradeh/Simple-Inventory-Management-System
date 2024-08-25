@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; //TODO: Remove unused dependencies
 
 namespace Inventory_System.Products
 {
@@ -20,7 +20,7 @@ namespace Inventory_System.Products
                 return Value * 3;
             if(Type == CurrencyType.ILS)
                 return Value;
-            return null;
+            return null; //TODO: what null means? can we return 0?
         }
         public override string ToString()
         {

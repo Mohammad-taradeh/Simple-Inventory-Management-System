@@ -1,7 +1,7 @@
 ﻿using System;
 using Inventory_System.Products;
 using Inventory_System.Inventory;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.X509Certificates; //TODO: Remove unused dependencies
 
 class Program
 {

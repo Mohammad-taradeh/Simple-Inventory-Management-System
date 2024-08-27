@@ -1,9 +1,7 @@
-using Inventory_System.Products;
-using System;
-using System.Xml.Linq; //TODO: Remove unused dependencies
+using InventorySystem.Products;
 
 
-namespace Inventory_System.Inventory //TODO: NIT InventorySystem.Inventory
+namespace InventorySystem.Inventory
 {
     public static class Inventory
     {
@@ -12,9 +10,8 @@ namespace Inventory_System.Inventory //TODO: NIT InventorySystem.Inventory
         public static void AddProduct(Product product)
         {
 
-            Product? exist = products.FirstOrDefault(p => p.Name == product.Name); //TODO: var
-            //TODO: Since we need the product to check if name is used we can use .Any
-            if (exist != null)
+            var exist = products.Any(p => p.Name == product.Name); 
+            if (exist)
             {
                 Console.WriteLine("Ther is a product with the same name.");
             }
@@ -58,7 +55,7 @@ namespace Inventory_System.Inventory //TODO: NIT InventorySystem.Inventory
             }
         }
 
-        public static void UpdateProduct(string name)
+        public static void UpdateProduct(string name, int quantity, double price)
         {
             if (!products.Any())
                 Console.WriteLine("No Products in the Inventory!");
@@ -69,19 +66,9 @@ namespace Inventory_System.Inventory //TODO: NIT InventorySystem.Inventory
                     Console.WriteLine("Product Not Found :)");
                 else
                 {
-                    Console.WriteLine("Enter new price (leave blank to keep current): ");
-                    var newPrice = Console.ReadLine();//TODO Can we pass new values to the method? so this will update the product without get the value of the new ones?
-                    if (double.TryParse(newPrice, out var price))
-                    {
-                        product.Price.Value = price;
-                    }
-                    Console.WriteLine("Enter new quantity (leave blank to keep current): ");
-                    var newQuantity = Console.ReadLine();
-                    if (int.TryParse(newQuantity, out var quantity))
-                    {
-                        product.Quantity = quantity;
-                    }
-                    Console.WriteLine($"Product updated successfully: {0}", product);
+                    product.Quantity = quantity;
+                    product.Price.Value = price;
+                    Console.WriteLine($"Product updated successfully: {product.ToString}");
                 }
             }
         }

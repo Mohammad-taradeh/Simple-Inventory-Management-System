@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks; //TODO: Remove unused dependencies
-
-namespace Inventory_System.Products
+﻿
+namespace InventorySystem.Products
 {
     public class Price
     {
-        public CurrencyType? Type { get; init; }
+        public CurrencyType Type { get; init; }
         public double Value { get; set; }
         public double? GetPrice()
         {
@@ -20,7 +15,7 @@ namespace Inventory_System.Products
                 return Value * 3;
             if(Type == CurrencyType.ILS)
                 return Value;
-            return null; //TODO: what null means? can we return 0?
+            return 0;
         }
         public override string ToString()
         {

@@ -1,69 +1,103 @@
-﻿using System; //TODO: Remove unused dependencies
-using Inventory_System.Products;
-using Inventory_System.Inventory;
-using System.Security.Cryptography.X509Certificates; //TODO: Remove unused dependencies
+﻿using InventorySystem.Products;
+using InventorySystem.Inventory;
+using InventorySystem;
+
+
 
 class Program
 {
-    private static CurrencyType? CheckCurrency() //TODO: Add default enum value instead of return null
-    {
-        Console.WriteLine("Enter the Currency \nJOD \nEuro \nDollar: \nILS");
-        var currency = Console.ReadLine(); //TODO: NIT: I prefer pass currency to check method instead of reading and check the value
-        if (currency is null)
-            { //TODO: Fix indentation
-            Console.WriteLine("Currency can't be null");
-            return null;
-         }
-        else //TODO Remove elses
-        {
-            try
-            {
-                return Enum.Parse<CurrencyType>(currency); //TODO: Use trey parse instead, to avoid throw an exception
-            }
-            catch
-            {
-                Console.WriteLine("Invalid currency type.");
-                return null;
-            }
-        }
+    private static CurrencyType CheckCurrency(String? currency) 
+    { 
+        var converted = Enum.TryParse(currency, out CurrencyType result);
+        return converted? result: default;
+
+       
     }
     private static void DisplayAddProduct()
     {
         Console.WriteLine("Enter the product name:");
         var name = Console.ReadLine();
-        if (name != null) //TODO: Revert the condition so we can have this without a block
+        if(name is null || name.Length == 0)
         {
-            Console.WriteLine("Enter the product price:");
-            var price = Console.ReadLine();
-            if (!double.TryParse(price, out var validPrice))
-                Console.WriteLine("Invalid price type.");
-            else
-            {
-                var currency = CheckCurrency();
-                if(currency != null) //TODO: Revert the condition
-                {
-                    Console.WriteLine("Enter the product quantity:");
-                     //using another way to parse string to int.
-                     String? s = Console.ReadLine(); //TODO: NIT: var
-                     int quantity = int.Parse(s ?? "-1"); //TODO: Use TryParse
-                    if (quantity == -1) //TODO: What -1 mean? can we have it in a constant that constant name describe what it means?
-                        Console.WriteLine("Invalid quantity type.");
-                    else // TODO: Remove else
-                    {
-                        Product p = new (name, new Price() { Value = validPrice, Type = currency }, quantity);
-                        Inventory.AddProduct(p);
-                    }
-                }
-            }
+            Console.WriteLine("Name must not be null.");
+            return;
+        }
+    
+        Console.WriteLine("Enter the product price:");
+        var price = Console.ReadLine();
+        if (!double.TryParse(price, out var validPrice))
+        {
+            Console.WriteLine("Invalid price value.");
+            return;
+        }
+
+        Console.WriteLine("Enter the Currency type:");
+        var currencyInput = Console.ReadLine();
+        var currency = CheckCurrency(currencyInput);
+
+        Console.WriteLine("Enter the product quantity:");
+        var quantityInput = Console.ReadLine();
+        if(!Int32.TryParse(quantityInput, out int quantity))
+        {
+            Console.WriteLine("Invalid amount(quantity) provided.");
+            return;
+        }
+        Product p = new (name, new Price() { Value = validPrice, Type = currency }, quantity);
+        Inventory.AddProduct(p);
+        
+        
+            
+    }
+    private static void DisplayUpdateProduct()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the name of the product to update:");
+        var name = Console.ReadLine();
+        if (name is null || name.Length == 0 )
+        { 
+            Console.WriteLine("Name must not be null.");
+            return;
         }
         else
+        {
+            Console.WriteLine("Enter new price: ");
+            var newPrice = Console.ReadLine();
+            if (!double.TryParse(newPrice, out var price))
+            {
+                Console.WriteLine("Invalid new Price.");
+                return;
+            }
+
+            Console.WriteLine("Enter new quantity: ");
+            var newQuantity = Console.ReadLine();
+            if (!int.TryParse(newQuantity, out var quantity))
+            {
+                Console.WriteLine("Invalid quantity.");
+            }
+            Inventory.UpdateProduct(name, quantity, price);
+        }
+    }
+    private static void DisplayDeleteProduct()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the name of the product to update:");
+        var name = Console.ReadLine();
+        if (name is null || name.Length == 0)
             Console.WriteLine("Name must not be null.");
+        else Inventory.RemoveProduct(name);
+    }
+    private static void DisplaySearchProduct()
+    {
+        Console.Clear();
+        Console.WriteLine("Enter the name of the product:");
+        var name = Console.ReadLine();
+        if (name is null || name.Length == 0)
+            Console.WriteLine("Name must not be null.");
+        else Inventory.FindByName(name);
     }
     static void Main()
-    {
-        //TODO: NIT: Remove new lines
-        
-        bool running = true; //TODO: var
+    {   
+        var running = true;
         while (running)
         {
             
@@ -76,42 +110,28 @@ class Program
             Console.WriteLine("6. Exit");
             Console.Write("Choose an option: ");
 
-            String? choice = Console.ReadLine(); //TODO: NIT: var
-            switch (choice)
+            var input = Console.ReadLine();
+            var x = int.TryParse(input, out var value) ? value : 7;
+            var option = (UserInput)x;
+            switch (option)
             {
-                case "1": //TODO: Can we have constant for each option to make it more readable?
-                    Console.Clear(); //TODO Should we move clear out?
+                case UserInput.AddProduct: //TODO: Can we have constant for each option to make it more readable?
                     DisplayAddProduct();
                     break;
-                case "2":
+                case UserInput.AllProducts:
                     Console.Clear();
                     Inventory.GetAll();
                     break;
-                case "3":
-                    Console.Clear();
-                    Console.WriteLine("Enter the name of the product to update:"); //TODO: can we move this to a method the same as DisplayAddProduct
-                    var name = Console.ReadLine();
-                    if (name != null)
-                        Inventory.UpdateProduct(name);
-                    else Console.WriteLine("Name must not be null.");
+                case UserInput.EditProduct:
+                    DisplayUpdateProduct();
                     break;
-                case "4":
-                    Console.Clear();
-                    Console.WriteLine("Enter the name of the product to update:"); //TODO: can we move this to a method the same as DisplayAddProduct
-                    name = Console.ReadLine();
-                    if (name != null)
-                        Inventory.RemoveProduct(name);
-                    else Console.WriteLine("Name must not be null.");
+                case UserInput.DeleteProduct:
+                    DisplayDeleteProduct();
                     break;
-                case "5":
-                    Console.Clear();
-                    Console.WriteLine("Enter the name of the product:"); //TODO: can we move this to a method the same as DisplayAddProduct
-                    name = Console.ReadLine();
-                    if (name == null)
-                        Console.WriteLine("Name must not be null.");
-                    else Inventory.FindByName(name);
+                case UserInput.FindProduct:
+                    DisplaySearchProduct();
                     break;
-                case "6":
+                case UserInput.Stop:
                     running = false;
                     break;
             }

@@ -1,10 +1,14 @@
-﻿using System;  //TODO: Remove unused dependencies
+﻿using System.Reflection.Emit;
 
-namespace Inventory_System.Products //TODO: NIT: InventorySystem.Products
+namespace InventorySystem.Products
 {
     public class Product
     {
-        public string Name { get; init; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        
+        public int Quantity { get;  set; } 
+        public Price Price { get; set; }
+
         public Product(string name, Price price, int quantity)
         {
             Name = name;
@@ -12,16 +16,19 @@ namespace Inventory_System.Products //TODO: NIT: InventorySystem.Products
             Quantity = quantity;
 
         }
-        public int Quantity { get; set; } //TODO: Can we move all the properties above the constructor?
-        public Price Price { get; set; }
-        public override bool Equals(object? obj)
+
+        public Product(){
+            Price = new() { Value = 0, Type = default };
+        }
+
+        public bool Equals(Product? product)
         {
-            if (obj == null || (obj is not Product)) //TODO: is operator handle null so we can avoid null check
+         
+            if (product is not Product) 
                 return false;
-            else //TODO: NIT: Remove else
-                return Name == ((Product)obj).Name //TODO: To avoid casting we can update is obj is not Product product and use product instead of casting + obj
-                    && Price == ((Product)obj).Price
-                    && Quantity == ((Product)obj).Quantity;
+            return Name == product.Name 
+                && Price == product.Price
+                && Quantity == product.Quantity;
         }
         public override int GetHashCode()
         {

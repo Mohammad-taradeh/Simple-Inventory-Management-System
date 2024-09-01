@@ -1,5 +1,8 @@
 ﻿using InventorySystem.Products;
 using InventorySystem.Inventory;
+using InventorySystem;
+
+
 
 class Program
 {
@@ -33,7 +36,6 @@ class Program
         var currency = CheckCurrency(currencyInput);
 
         Console.WriteLine("Enter the product quantity:");
-        //using another way to parse string to int.
         var quantityInput = Console.ReadLine();
         if(!Int32.TryParse(quantityInput, out int quantity))
         {
@@ -108,26 +110,28 @@ class Program
             Console.WriteLine("6. Exit");
             Console.Write("Choose an option: ");
 
-            var choice = Console.ReadLine();
-            switch (choice)
+            var input = Console.ReadLine();
+            var x = int.TryParse(input, out var value) ? value : 7;
+            var option = (UserInput)x;
+            switch (option)
             {
-                case "1": //TODO: Can we have constant for each option to make it more readable?
+                case UserInput.AddProduct: //TODO: Can we have constant for each option to make it more readable?
                     DisplayAddProduct();
                     break;
-                case "2":
+                case UserInput.AllProducts:
                     Console.Clear();
                     Inventory.GetAll();
                     break;
-                case "3":
+                case UserInput.EditProduct:
                     DisplayUpdateProduct();
                     break;
-                case "4":
+                case UserInput.DeleteProduct:
                     DisplayDeleteProduct();
                     break;
-                case "5":
+                case UserInput.FindProduct:
                     DisplaySearchProduct();
                     break;
-                case "6":
+                case UserInput.Stop:
                     running = false;
                     break;
             }

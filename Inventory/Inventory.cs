@@ -10,8 +10,8 @@ namespace InventorySystem.Inventory
         public static void AddProduct(Product product)
         {
 
-            var exist = products.Any(p => p.Name == product.Name); 
-            if (exist)
+            var exist = ProductExist(product.Name);
+            if (exist is not null)
             {
                 Console.WriteLine("Ther is a product with the same name.");
             }
@@ -22,11 +22,19 @@ namespace InventorySystem.Inventory
             }
             
         }
+
+        private static Product? ProductExist(string name)
+        {
+            if (!products.Any(prod => prod.Name == name))
+                return null;
+            var product = products.Find(p => p.Name == name);
+            if (product == null)
+                return null;
+            return product;
+        }
         public static void RemoveProduct(string name)
         {
-            if (!products.Any())
-                Console.WriteLine($"No products in the invertory.");
-            var product = products.Find(prod => prod.Name == name);
+            var product = ProductExist(name);
             if (product == null)
             {
                 Console.WriteLine($"There are no product with the name: {0}", name);
@@ -38,39 +46,28 @@ namespace InventorySystem.Inventory
             }
         }
 
-        //TODO: Remove, update and find by name check if collection is empty and if product exists so should we move it to a private method and used when needed?
         public static void FindByName(string name)
         {
-            if (!products.Any())
-            {
-                Console.WriteLine("No Products in the Inventory.");
-            }
+            var product = ProductExist(name);
+            if (product == null)
+                Console.WriteLine("Product not found!");
             else
-            {
-                var product = products.Find(prod => prod.Name == name);
-                if (product == null)
-                    Console.WriteLine("Product not found!");
-                else
-                    Console.WriteLine(product.ToString());
-            }
+                Console.WriteLine(product.ToString());
+            
         }
 
         public static void UpdateProduct(string name, int quantity, double price)
         {
-            if (!products.Any())
-                Console.WriteLine("No Products in the Inventory!");
+            var product = ProductExist(name);
+            if (product == null)
+                Console.WriteLine("Product Not Found :)");
             else
             {
-                var product = products.Find(product => product.Name == name);
-                if (product == null)
-                    Console.WriteLine("Product Not Found :)");
-                else
-                {
-                    product.Quantity = quantity;
-                    product.Price.Value = price;
-                    Console.WriteLine($"Product updated successfully: {product.ToString}");
-                }
+                product.Quantity = quantity;
+                product.Price.Value = price;
+                Console.WriteLine($"Product updated successfully: {product.ToString}");
             }
+            
         }
 
         public static void GetAll()

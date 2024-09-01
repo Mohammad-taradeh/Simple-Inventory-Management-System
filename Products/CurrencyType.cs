@@ -6,8 +6,8 @@ namespace InventorySystem.Products
     [DefaultValue(ILS)]
     public enum CurrencyType
     {
-        Dollar,
-        Euro,
+        USD,
+        EUR,
         JOD,
         ILS
     }

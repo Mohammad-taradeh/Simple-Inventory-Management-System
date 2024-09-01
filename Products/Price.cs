@@ -9,9 +9,9 @@ namespace InventorySystem.Products
         {
             if (Type == CurrencyType.JOD)
                 return Value * 5;
-            if(Type == CurrencyType.Euro)
+            if(Type == CurrencyType.EUR)
                 return Value * 4;
-            if(Type == CurrencyType.Dollar)
+            if(Type == CurrencyType.USD)
                 return Value * 3;
             if(Type == CurrencyType.ILS)
                 return Value;

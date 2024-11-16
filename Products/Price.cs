@@ -17,6 +17,16 @@ namespace InventorySystem.Products
                 return Value;
             return 0;
         }
+        public Price(double price, CurrencyType type)
+        {
+            Value = price;
+            Type = type;
+        }
+        public Price()
+        {
+            Value = 0;
+            Type = default(CurrencyType);
+        }
         public override string ToString()
         {
             return $" {Value} in {Type} && {GetPrice()} In ILS";

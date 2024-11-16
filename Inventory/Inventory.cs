@@ -1,4 +1,6 @@
+using Inventory_System.DB;
 using InventorySystem.Products;
+
 
 
 namespace InventorySystem.Inventory
@@ -6,83 +8,65 @@ namespace InventorySystem.Inventory
     public static class Inventory
     {
         private static List<Product> products = new ();
-
-        public static void AddProduct(Product product)
+        private static DataSource dataSource = new DataSource();
+        
+        public static async void AddProduct(Product product)
         {
+            //StringBuilder query = new();
 
-            var exist = ProductExist(product.Name);
-            if (exist is not null)
+            //query.AppendLine("");
+
+            var exist = await dataSource.ProductExist(product.Name);
+            if (exist)
             {
-                Console.WriteLine("Ther is a product with the same name.");
+                Console.WriteLine("There is a product with the same name.");
             }
             else
             {
-                products.Add(product);
-                Console.WriteLine($"Product Added successfully: {product}");
+                var IsAdded = await dataSource.AddProduct(product);
+                if(IsAdded)
+                    Console.WriteLine($"Product Added successfully: {product}");
+                else
+                    Console.WriteLine("Adding product Failed");
+
             }
             
         }
+        public static async void RemoveProduct(string name)
+        {
+            var productExist = await dataSource.ProductExist(name);
+            if (productExist)
+            {
+                await dataSource.DeleteProduct(name);
+                Console.WriteLine($"Product({name}) deleted.");
+                return;
+            }
+             Console.WriteLine("Product already not exist.");
 
-        private static Product? ProductExist(string name)
-        {
-            if (!products.Any(prod => prod.Name == name))
-                return null;
-            var product = products.Find(p => p.Name == name);
-            if (product == null)
-                return null;
-            return product;
-        }
-        public static void RemoveProduct(string name)
-        {
-            var product = ProductExist(name);
-            if (product == null)
-            {
-                Console.WriteLine($"There are no product with the name: {0}", name);
-            }
-            else
-            {
-                products.Remove(product);
-                Console.WriteLine($"Product deleted successfully: {0}", product);
-            }
         }
 
-        public static void FindByName(string name)
+        public static async void FindByName(string name)
         {
-            var product = ProductExist(name);
-            if (product == null)
+            var product = await dataSource.GetProducts(name);
+            if (!product.Any())
                 Console.WriteLine("Product not found!");
             else
                 Console.WriteLine(product.ToString());
             
         }
 
-        public static void UpdateProduct(string name, int quantity, double price)
+        public static async void UpdateProduct(string name, Product product)
         {
-            var product = ProductExist(name);
-            if (product == null)
-                Console.WriteLine("Product Not Found :)");
-            else
-            {
-                product.Quantity = quantity;
-                product.Price.Value = price;
-                Console.WriteLine($"Product updated successfully: {product.ToString}");
-            }
-            
+            var updatedProduct = await dataSource.UpdateProduct(name, product);
+            Console.WriteLine("product updated:");
+            Console.WriteLine(updatedProduct.ToString());
+
         }
 
-        public static void GetAll()
+        public static async void GetAll()
         {
-            if (!products.Any())
-                Console.WriteLine("No products in the inventory :)");
-            else
-            {
-                Console.WriteLine("Current Inventory:");
-                foreach (var product in products)
-                {
-                    Console.WriteLine(product.ToString());
-                    Console.WriteLine("----------------------------------");
-                }
-            }
+            var products = await dataSource.GetProducts();
+            products.ForEach(x => Console.WriteLine(x.ToString()));
         }
 
     }

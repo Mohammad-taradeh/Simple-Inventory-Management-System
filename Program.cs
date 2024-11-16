@@ -1,6 +1,8 @@
 ﻿using InventorySystem.Products;
 using InventorySystem.Inventory;
 using InventorySystem;
+using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 
 
@@ -74,13 +76,14 @@ class Program
             {
                 Console.WriteLine("Invalid quantity.");
             }
-            Inventory.UpdateProduct(name, quantity, price);
+            Product newProduct = new Product() { Name = name, Quantity = quantity, Price = new Price(price, CurrencyType.ILS) };
+            Inventory.UpdateProduct(name, newProduct);
         }
     }
     private static void DisplayDeleteProduct()
     {
         Console.Clear();
-        Console.WriteLine("Enter the name of the product to update:");
+        Console.WriteLine("Enter the name of the product to delete:");
         var name = Console.ReadLine();
         if (name is null || name.Length == 0)
             Console.WriteLine("Name must not be null.");
@@ -96,7 +99,22 @@ class Program
         else Inventory.FindByName(name);
     }
     static void Main()
-    {   
+    {
+        //var dataSource = @"(localdb)\MSSQLLocalDB";
+        //var database = @"Inventory";
+        //var connectionString = "Server=localhost;Database=Inventory;TrustServerCertificate=true;Integrated Security=True;";
+        //SqlConnection sqlConnection = new SqlConnection(connectionString);
+        //try
+        //{
+        //    Console.WriteLine("Opening Connection ....");
+        //    sqlConnection.Open();
+        //    Console.WriteLine("Connection Successful!");
+        //}
+        //catch (Exception ex) 
+        //{
+        //    Console.WriteLine($"Error Opening Connection: {ex.Message}");
+        //}
+        //Console.Read();
         var running = true;
         while (running)
         {
@@ -115,7 +133,7 @@ class Program
             var option = (UserInput)x;
             switch (option)
             {
-                case UserInput.AddProduct: //TODO: Can we have constant for each option to make it more readable?
+                case UserInput.AddProduct:
                     DisplayAddProduct();
                     break;
                 case UserInput.AllProducts:

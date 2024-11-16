@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks; //TODO: Remove unused dependencies
+﻿using System.ComponentModel;
 
-namespace Inventory_System.Products
+
+namespace InventorySystem.Products
 {
+    [DefaultValue(ILS)]
     public enum CurrencyType
     {
-        //TODO: NIT: Add associated value like Dollar = 0,
-        //TODO: Add default value
-        Dollar,
-        Euro,
+        USD,
+        EUR,
         JOD,
         ILS
     }

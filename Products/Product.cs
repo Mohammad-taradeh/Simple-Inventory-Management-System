@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-
+﻿
 namespace InventorySystem.Products
 {
     public class Product
@@ -18,7 +17,7 @@ namespace InventorySystem.Products
         }
 
         public Product(){
-            Price = new() { Value = 0, Type = default };
+            Price = new();
         }
 
         public bool Equals(Product? product)
